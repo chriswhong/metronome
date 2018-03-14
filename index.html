@@ -5,152 +5,18 @@
   <title>Metronome</title>
   <meta name="description" content="Metronome, the clock in Union Square">
   <meta name="author" content="Chris Whong">
-  
-  <style>
-    html,body { 
-      margin:0; padding:0; 
-      font-family: 'Arimo', Arial, serif; 
-      font-weight: 400; 
-      width:100%;
-      background: #4C4C4C;
-      height:100%;
-      color: #fff;
-    }
 
-    #time { 
-      font-size:3.8em;
-      margin: 0 auto;
-      display: block;
-      width: 100%;
-      text-align: center;
-      color: #FF9C02;
-      position: relative;
-      top: 50%;
-      background: #000;
-      transform: translateY(-50%);
-      letter-spacing: 19px;
-    }
-
-    #menu {
-      font-size: 1.1em;
-      margin: 0 auto;
-      text-align: center;
-      width: 100%;
-      position: absolute;
-      bottom: 0;
-      margin-bottom: 9px;
-      font-weight:bold;
-    }
-
-    #menu a:visited {
-      color:#fff;
-    }
-
-    #menu a:hover {
-      color: #FF9C02;
-    }
-  </style>
-
-  <link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:700" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-  <div id = 'time'></div>
-  <div id = 'menu'>
-    <a href = 'http://chriswhong.com/programming/recreating-the-union-square-clock-with-javascript/'>About</a>
+  <div id = "time"></div>
+  <div id = "menu">
+    <a href = "http://chriswhong.com/programming/recreating-the-union-square-clock-with-javascript/">About</a>
   </div>
 
-  <script>
-    $( document ).ready(function(){
-
-      var time,
-      hoursUp,
-      minutesUp,
-      secondsUp,
-      decisecondsUp;
-
-      //variable font sizing from http://stackoverflow.com/questions/5358183/is-it-possible-to-dynamically-scale-text-size-based-on-browser-width
-      var $body = $('body'); //Cache this for performance
-      var setBodyScale = function() {
-        var scaleSource = $body.width(),
-            scaleFactor = 0.14,                     
-            maxScale = 500,
-            minScale = 10; //Tweak these values to taste
-
-        var fontSize = scaleSource * scaleFactor; //Multiply the width of the body by the scaling factor:
-
-        if (fontSize > maxScale) fontSize = maxScale;
-        if (fontSize < minScale) fontSize = minScale; //Enforce the minimum and maximums
-
-        $('body').css('font-size', fontSize + '%');
-        $('#time').css('letter-spacing', (fontSize/10) + 'px');
-      }
-
-      $(window).resize(function(){
-                setBodyScale();
-      });
-
-      //run once 
-      setBodyScale();
-
-      //repeat every 10th of a second, forever:
-      setInterval( function(){
-        time = new Date;
-
-        hoursUp = make2digits(time.getHours()),
-        minutesUp = make2digits(time.getMinutes());
-        secondsUp = make2digits(time.getSeconds());
-        decisecondsUp = Math.floor((time.getTime() % 1000) / 100);
-
-        decisecondsDown = (10 - decisecondsUp) % 10; //doesn't need getDown because it's only ever one digit, I think
-        secondsDown = getDown(secondsUp,60);
-        minutesDown = getDown(minutesUp,60);
-        hoursDown = getDown(hoursUp,24);
-
-        upString = hoursUp 
-          + minutesUp
-          + secondsUp 
-          + decisecondsUp;
-
-        downString = 
-          + decisecondsDown
-          + secondsDown
-          + minutesDown
-          + hoursDown
-          ;
-
-
-        //every 100th of a second, update the center digit, break at 9
-        var centerDigit = 0;
-        var centerInterval = setInterval( function() {
-          centerDigit++;
-          $('#time').text(upString + centerDigit.toString() + downString);
-          if(centerDigit == 9) {
-            clearInterval(centerInterval);
-          }
-        },10)
-      },100)
-
-      //add leading zero and convert to string
-      function make2digits(number) {
-        if (number < 10) {
-          return '0' + number.toString();
-        } else {
-          return number.toString();
-        }
-      }
-
-      //figure out corresponding down values... special treatment for zeroes
-      function getDown(upValue,max) {
-        if(upValue == '00') {
-          return (max - 1).toString();
-        } else {
-          return make2digits(((max - upValue) % max) - 1);
-        }  
-      }
-    })
-</script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="js/script.js"></script>
 </body>
 
 
